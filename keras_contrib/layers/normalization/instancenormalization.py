@@ -106,7 +106,7 @@ class InstanceNormalization(Layer):
         self.built = True
 
     def call(self, inputs, training=None):
-        input_shape = K.int_shape(inputs)
+        input_shape = inputs.shape
         reduction_axes = list(range(0, len(input_shape)))
 
         if self.axis is not None:
