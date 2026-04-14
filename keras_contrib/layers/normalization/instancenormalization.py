@@ -1,6 +1,5 @@
 from keras.layers import Layer, InputSpec
 from keras import initializers, regularizers, constraints
-from keras import backend as K
 import numpy as np
 
 
@@ -115,8 +114,8 @@ class InstanceNormalization(Layer):
 
         del reduction_axes[0]
 
-        mean = mean(inputs, reduction_axes, keepdims=True)
-        stddev = std(inputs, reduction_axes, keepdims=True) + self.epsilon
+        mean = np.mean(inputs, reduction_axes, keepdims=True)
+        stddev = np.std(inputs, reduction_axes, keepdims=True) + self.epsilon
         normed = (inputs - mean) / stddev
 
         broadcast_shape = [1] * len(input_shape)
