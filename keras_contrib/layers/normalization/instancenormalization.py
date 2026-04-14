@@ -1,7 +1,6 @@
 from keras.layers import Layer, InputSpec
 from keras import initializers, regularizers, constraints
-import numpy as np
-
+import tensorflow as tf
 
 class InstanceNormalization(Layer):
     """Instance normalization layer.
@@ -114,8 +113,8 @@ class InstanceNormalization(Layer):
 
         del reduction_axes[0]
 
-        mean = np.mean(inputs, reduction_axes, keepdims=True)
-        stddev = np.std(inputs, reduction_axes, keepdims=True) + self.epsilon
+        mean = tf.reduce_mean(inputs, reduction_axes, keepdims=True)
+        stddev = tf.math.reduce_std(inputs, reduction_axes, keepdims=True) + self.epsilon
         normed = (inputs - mean) / stddev
 
         broadcast_shape = [1] * len(input_shape)
@@ -123,10 +122,10 @@ class InstanceNormalization(Layer):
             broadcast_shape[self.axis] = input_shape[self.axis]
 
         if self.scale:
-            broadcast_gamma = np.reshape(self.gamma, broadcast_shape)
+            broadcast_gamma = tf.reshape(self.gamma, broadcast_shape)
             normed = normed * broadcast_gamma
         if self.center:
-            broadcast_beta = np.reshape(self.beta, broadcast_shape)
+            broadcast_beta = tf.reshape(self.beta, broadcast_shape)
             normed = normed + broadcast_beta
         return normed
 
