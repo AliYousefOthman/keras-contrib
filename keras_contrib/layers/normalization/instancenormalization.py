@@ -127,7 +127,7 @@ class InstanceNormalization(Layer):
             broadcast_gamma = np.reshape(self.gamma, broadcast_shape)
             normed = normed * broadcast_gamma
         if self.center:
-            broadcast_beta = K.reshape(self.beta, broadcast_shape)
+            broadcast_beta = np.reshape(self.beta, broadcast_shape)
             normed = normed + broadcast_beta
         return normed
 
